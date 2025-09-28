@@ -23,6 +23,7 @@ notes: |
 EOF
 }
 
+
 # [1.2] extract_repo_info: Helper function: Extract user and repo from a github.com URL
 extract_repo_info() {
     local url="$1"
@@ -210,11 +211,15 @@ if [[ ${1:-} == "-h" || ${1:-} == "--help" ]]; then
 fi
 
 # [2.2] repo-url: Ask user for input
+# read -r VAR < /dev/tty forces read to pull input from the terminal, not from the piped script stream.
 echo "<prompt> Enter GitHub file/repo URL:"
-read -r REPO_URL
+read -r REPO_URL < /dev/tty
+echo
 
 # [2.3] working-with-secrets: SECURITY ZONE START
-read -r -s -p "<prompt> Enter GitHub Token (or press Enter to skip, '-q' to quit): " GITHUB_TOKEN
+# read -r VAR < /dev/tty forces read to pull input from the terminal, not from the piped script stream.
+echo -n "<prompt> Enter GitHub Token (or press Enter to skip, '-q' to quit): "
+read -r -s GITHUB_TOKEN < /dev/tty
 echo
 
 if [ "$GITHUB_TOKEN" == "-q" ]; then
